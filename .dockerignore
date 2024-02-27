@@ -1,0 +1,13 @@
+# env
+Dockerfile
+Dockerfile.prod
+.coverage
+archive
+__pycache__
+
+venv/ 
+venv
+
+# exclude csv / excel files
+xlsx
+csv
