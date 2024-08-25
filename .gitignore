@@ -7,6 +7,9 @@ instance
 archive/
 venv/
 test_live.py
+.pytest_cache/
+get_directory_file_context.py
+combined_docs.txt
 
 # dependencies
 /node_modules

@@ -9,8 +9,8 @@ load_dotenv()
 test_url = os.getenv("TEST_URL")
 client = TestClient(create_app())
 
-API_USERNAME = os.getenv("API_USERNAME")
-API_PASSWORD = os.getenv("API_PASSWORD")
+API_USERNAME = os.getenv("API_USERNAME") or ""
+API_PASSWORD = os.getenv("API_PASSWORD") or ""
 
 def test_crawl_with_javascript():
     response = client.post("/crawl", json={"url": test_url, "render_js": True}, auth=(API_USERNAME, API_PASSWORD))

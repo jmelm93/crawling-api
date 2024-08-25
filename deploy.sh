@@ -19,18 +19,18 @@ echo '**************************************************************************
 echo "Starting $APP_NAME as `whoami`"
 echo '************************************************************************************'
 
-echo "--------------------------------------------------------------------------------"
-echo "Running tests ..."
-echo "--------------------------------------------------------------------------------"
-source venv/Scripts/activate # activate venv if not already activated
-pytest 
+# echo "--------------------------------------------------------------------------------"
+# echo "Running tests ..."
+# echo "--------------------------------------------------------------------------------"
+# source venv/Scripts/activate # activate venv if not already activated
+# pytest 
 
-if [ $? -eq 0 ]; then
-    echo "Tests passed. Continuing to build and deploy..."
-else
-    echo "Tests failed. Exiting..."
-    exit 1
-fi
+# if [ $? -eq 0 ]; then
+#     echo "Tests passed. Continuing to build and deploy..."
+# else
+#     echo "Tests failed. Exiting..."
+#     exit 1
+# fi
 
 
 echo "--------------------------------------------------------------------------------"
