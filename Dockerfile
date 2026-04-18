@@ -1,5 +1,4 @@
-# Install https://playwright.dev/python/docs/docker
-FROM mcr.microsoft.com/playwright/python:v1.41.0-jammy
+FROM python:3.11-slim
 
 # set working directory
 WORKDIR /usr/src/app
@@ -10,11 +9,10 @@ ENV PYTHONUNBUFFERED 1
 
 # Install any needed packages specified in requirements.txt
 COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Add app
 COPY . .
 
 # Run uvicorn when the container launches
 CMD ["python3", "main.py"]
-

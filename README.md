@@ -2,27 +2,27 @@
 
 This FastAPI application provides an API endpoint to crawl web pages with the option to render JavaScript. It's designed to be deployed in a Docker container, making it scalable and easy to deploy on cloud platforms like Google Cloud Run.
 
-This application uses Playwright for JavaScript rendering and aiohttp for static page rendering. Both are setup for async crawling to ensure efficiency.
+Uses the BrightData Web Unlocker SDK for JavaScript rendering (server-side) and bot bypass, with aiohttp for direct static page fetching.
 
-## Proxy Configuration
-- There are many options available. I personally used https://brightdata.com/.
+## How It Works
+
+- `render_js=False`: Fetches the page directly with aiohttp (free, fast). Falls back to BrightData SDK if the direct request fails or returns a non-2xx status.
+- `render_js=True`: Uses the BrightData SDK directly, which handles JavaScript rendering server-side along with bot detection bypass.
 
 ## Local Development
 1. Clone the repo
 2. Create a Virtual Environment
-3. Install dependencies
-4. Create `.env` file with the below dependencies.
+3. Install dependencies: `pip install -r requirements.txt`
+4. Create `.env` file:
 ```
-PROXY_HOST=your_proxy_host
-PROXY_USERNAME=your_proxy_username
-PROXY_PASSWORD=your_proxy_password
+BRIGHTDATA_API_KEY=your_brightdata_api_key
 API_USERNAME=api_username
 API_PASSWORD=api_password
 TEST_URL=your_test_url
-GOOGLE_CLOUD_PROJECT_ID=you_google_cloud_project_id
+GOOGLE_CLOUD_PROJECT_ID=your_google_cloud_project_id
 ```
-5. Run the app with `uvicorn main:app`
-6. Navigate to `http://127.0.0.1:8000/docs` for testing 
+5. Run the app with `python main.py`
+6. Navigate to `http://127.0.0.1:8000/docs` for testing
 
 ## Deployment
 1. Ensure you have gcloud sdk on your computer (https://cloud.google.com/sdk/docs/install)
@@ -31,16 +31,18 @@ GOOGLE_CLOUD_PROJECT_ID=you_google_cloud_project_id
 4. Run `./deploy.sh` to deploy
 
 ## Files in Application
-- `src/__init__.py`: The main FastAPI application to instantiate the extensions.
-- `src/endpoints.py`: The endpoint definition for th API.
-- `src/crawl_page.py`: Contains the logic for the web crawler, supporting both JavaScript-rendered and plain HTML pages.
+- `src/__init__.py`: The main FastAPI application factory with BrightData SDK lifecycle management.
+- `src/endpoints.py`: The endpoint definition for the API.
+- `src/crawl_page.py`: Contains the crawling logic using aiohttp (direct) and BrightData SDK (fallback/JS rendering).
+- `src/auth.py`: HTTP Basic Authentication.
 - `Dockerfile`: Instructions for Docker on how to build the application image.
-- `.env`: A file for storing environment variables like proxy settings. (This file will not exist until you create it following the setup instructions.)
-- `deploy.sh`: Bash script to deploy the final application to Google Cloud Run.
-- `deploy_local.sh`: Bash script to deploy to local dockerized application.
+- `.env`: Environment variables (not committed to git).
+- `deploy.sh`: Bash script to deploy to Google Cloud Run.
+- `deploy_local.sh`: Bash script to deploy locally via Docker.
 
 ## Features
 - `Web Crawling`: Supports crawling both JavaScript-rendered pages and plain HTML content.
-- `Proxy Support`: Can use proxy settings defined in .env file for web crawling, useful for bypassing IP-based rate limiting or geofencing.
+- `BrightData SDK`: Uses the Web Unlocker SDK for bot bypass, CAPTCHA handling, and server-side JS rendering.
+- `Smart Fallback`: Direct aiohttp fetch first (free), BrightData SDK fallback on failure.
 - `Dockerization`: Packaged with Docker for easy deployment and scaling.
-- `Cloud Deployment Ready`: Easily deployable to Google Cloud Run or other cloud platforms that support Docker.
+- `Cloud Deployment Ready`: Easily deployable to Google Cloud Run.
